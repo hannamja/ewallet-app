@@ -21,6 +21,11 @@ import NapTien from './screens/NapTien';
 import RutTien from './screens/RutTien';
 import RutTienSoKhac from './screens/RutTienSoKhac';
 import QRCodeThanhToan from './screens/QRCodeThanhToan';
+import Login from './screens/Login';
+import ConfirmNap from './screens/ConfirmNap';
+import ConfirmRut from './screens/ConfirmRut';
+import ResultRut from './screens/ResultRut';
+import ResultNap from './screens/ResultNap';
 const Stack = createStackNavigator();
 const App = () => (
   <Provider store={store}>
@@ -30,6 +35,7 @@ const App = () => (
           headerShown: false
         }}
       >
+        <Stack.Screen name="Login" component={Login} />
         {/* Tabs */}
         <Stack.Screen name="Home" component={Tabs} />
 
@@ -41,6 +47,10 @@ const App = () => (
         <Stack.Screen name="RutTien" component={RutTien}></Stack.Screen>
         <Stack.Screen name="RutTienSoKhac" component={RutTienSoKhac}></Stack.Screen>
         <Stack.Screen name="QRCodeThanhToan" component={QRCodeThanhToan}></Stack.Screen>
+        <Stack.Screen name="ConfirmNap" component={ConfirmNap} />
+        <Stack.Screen name="ConfirmRut" component={ConfirmRut} />
+        <Stack.Screen name="ResultRut" component={ResultRut} />
+        <Stack.Screen name="ResultNap" component={ResultNap} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>

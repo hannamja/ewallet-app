@@ -2,9 +2,32 @@ import React from "react";
 import { ImageBackground, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider, Button } from "@rneui/base";
 import { Input } from "@rneui/themed";
-import { useState } from "react";
+import { FlatList } from "react-native-gesture-handler";
+import { useState, useEffect } from "react";
+import BankService from '../services/bank.service'
+import bankImgSource from '../assets/bankImg'
+import { useSelector } from "react-redux";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 const NapRut = ({ navigation }) => {
     const [money, setMoney] = useState(0)
+    const { user } = useSelector((state) => state.auth)
+    const [activeBank, setActiveBank] = useState(0)
+
+    const [bank, setBank] = useState([])
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            setMoney(0)
+        });
+        BankService.allLinkedBank(user.userInfo.phone_number, user.token)
+            .then((data) => setBank(data))
+            .catch((err) => {
+                console.log(err)
+            })
+        return unsubscribe
+    }, [navigation])
+
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <Header
@@ -30,8 +53,6 @@ const NapRut = ({ navigation }) => {
                 }
             />
 
-            <View style={{ width: "100%", height: 100 }}></View>
-
             <View style={styles.chuyenTienWrapper}>
 
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 10 }}>
@@ -42,7 +63,7 @@ const NapRut = ({ navigation }) => {
                         }}></Image>
                         <Text>Số dư ví</Text>
                     </View>
-                    <Text>100.000đ</Text>
+                    <Text>{user.userInfo.balance}</Text>
                 </View>
 
                 <Input inputContainerStyle={styles.chuyenTien} placeholder="Nhập số tiền (đ)" value={money === 0 ? "" : "" + money + ""}
@@ -91,10 +112,49 @@ const NapRut = ({ navigation }) => {
                     <Text>2.000.000đ</Text>
                 </TouchableOpacity>
             </View>
+            <View style={{ width: "100%", padding: 10 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text>Ngân hàng liên kết</Text>
+                    <TouchableOpacity>
+                        <Text style={{ color: "#86d6e4" }}>Xem tất cả</Text>
+                    </TouchableOpacity>
+                </View>
+                <FlatList style={{ maxHeight: 200, top: 10 }}
+                    data={bank}
+                    renderItem={({ item, index }) => <TouchableOpacity style={index === activeBank ? {
+                        flexDirection: "row", borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, marginBottom: 10
+                    } : {
+                        flexDirection: "row", borderWidth: 1, borderColor: 'grey', padding: 10, borderRadius: 10, marginBottom: 10, width: "80%"
+                    }} onPress={() => { setActiveBank(index) }}>
+                        <Image source={bankImgSource['bank' + item.bank.id]} style={
+                            {
+                                width: 50,
+                                height: 50,
+                            }
+                        }></Image>
+                        <View style={{ marginLeft: 10 }}>
+                            <Text style={{ color: "black", fontSize: 15, fontWeight: "bold" }}>{item.bank.name}</Text>
+                            <Text>{item.bank_account_number}</Text>
+                        </View>
+                    </TouchableOpacity>}
+                />
 
+                <TouchableOpacity style={{
+                    flexDirection: "row", justifyContent: "flex-start", marginTop: 20
+                }}>
+                    <Image source={require('../assets/mathematics-sign-plus-outline-icon.png')} style={
+                        {
+                            width: 20,
+                            height: 20,
+                            tintColor: "#86d6e4"
+                        }
+                    }></Image>
+                    <Text style={{ color: "#86d6e4", fontSize: 15 }}>Thêm liên kết</Text>
+                </TouchableOpacity>
+            </View>
             <View style={{
                 position: "absolute",
-                bottom: 50
+                bottom: 20
             }}>
                 <Button
                     title="Tiếp tục"
@@ -103,6 +163,7 @@ const NapRut = ({ navigation }) => {
                         borderRadius: 50,
                         width: 200,
                     }}
+                    onPress={() => navigation.navigate("ConfirmNap", { bank: bank[activeBank], money: money })}
                 />
             </View>
         </SafeAreaView >
@@ -112,9 +173,9 @@ const NapRut = ({ navigation }) => {
 const styles = StyleSheet.create({
     chuyenTienWrapper: {
         width: "90%",
+        margin: 10,
         backgroundColor: "#66cc9a",
         borderRadius: 5,
-        bottom: 50,
         shadowColor: "#000",
         shadowOffset: {
             width: 2,

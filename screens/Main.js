@@ -2,15 +2,18 @@ import React from "react";
 import { useState } from "react";
 import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider } from "@rneui/base";
+import { useSelector } from "react-redux";
 const image = require('../assets/banner.jpg');
 const Main = ({ navigation }) => {
     const [isEye, setEye] = useState(false)
+    const { user } = useSelector((state) => state.auth )
+    
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white" }}>
             <Header
                 backgroundColor="#66cc9a"
                 placement="left"
-                leftComponent={<View><Text>Hello, <Text style={styles.userName}>Hello</Text></Text></View>}
+                leftComponent={<View><Text>Hello, <Text style={styles.userName}>{user.userInfo.name}</Text></Text></View>}
                 rightComponent={<Image source={require('../assets/notifi-icon.png')} style={styles.notifiIcon}></Image>}
             />
             <View style={styles.bannerContainer}>
@@ -26,7 +29,7 @@ const Main = ({ navigation }) => {
                             </TouchableOpacity>
                             : <TouchableOpacity onPress={() => setEye(!isEye)} style={styles.moneyArea}>
                                 <Image source={require('../assets/show.png')} style={styles.showIcon}></Image>
-                                <Text>100.000đ</Text>
+                                <Text>{user.userInfo.balance}</Text>
                             </TouchableOpacity>
 
                         }

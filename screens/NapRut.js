@@ -2,9 +2,10 @@ import React from "react";
 import { ImageBackground, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider } from "@rneui/base";
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
 const NapRut = ({ navigation }) => {
     const [eye, setEye] = useState(false)
+    const { user } = useSelector(state => state.auth)
     return (
 
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
@@ -41,7 +42,7 @@ const NapRut = ({ navigation }) => {
             }}>
                 <Text style={{ color: "black", fontSize: 20 }}>Số dư ví</Text>
                 <View style={{ width: "100%", flexDirection: "row", justifyContent: "center" }}>
-                    <Text style={{ fontSize: 15 }}>{eye ? '******' : '100.000đ'}</Text>
+                    <Text style={{ fontSize: 15 }}>{eye ? '******' : user.userInfo.balance}</Text>
                     <TouchableOpacity onPress={() => eye ? setEye(false) : setEye(true)}>
                         <Image source={eye ? require('../assets/disable_eye.png') : require('../assets/eye.png')} style={{
                             width: 20,

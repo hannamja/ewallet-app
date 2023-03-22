@@ -1,26 +1,55 @@
-import { View, Text, SafeAreaView } from 'react-native'
-import React from 'react'
+import { View, Text, SafeAreaView, StyleSheet, Image } from 'react-native'
+import React, { useState } from 'react'
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Button } from "@rneui/base";
+import { Input } from "@rneui/themed";
+import { login } from '../slices/auth'
+import { useDispatch } from 'react-redux';
+const image = require('../assets/banner.jpg');
+export default function Login({ navigation }) {
+    const [isLogined, setLogined] = useState(false)
+    const [phone, setPhone] = useState("")
+    const [password, setPassword] = useState("")
 
-export default function Login() {
+    const dispatch = useDispatch()
+
+    const handleLogin = () => {
+        if (phone == "") return
+        if (password == "") return
+        
+        dispatch(login('abc', '123')).unwrap()
+            .then(() => {
+                navigation.navigate("Home")
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+    }
     return (
-        <SafeAreaView style={{ alignItems: "center", backgroundColor: "white" }}>
+        <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <View style={styles.bannerContainer}>
+                <Text style={{ position: "absolute", zIndex: 999, width: "90%", top: 50, left: "5%", fontSize: 30, fontWeight: "bold" }}>ĐĂNG NHẬP</Text>
                 <Image source={image} style={styles.banner}></Image>
             </View>
-            <View style={styles.mainFuncWrapper}>
-                <View style={styles.mainFunc}>
-                    <Input inputContainerStyle={styles.chuyenTien} placeholder="Nhập số tiền (đ)" 
-                        
+
+            <View style={styles.inputArea}>
+                <View>
+                    <Text style={{ fontSize: 15, fontWeight: "bold", padding: 5 }}>Số điện thoại</Text>
+                    <Input inputContainerStyle={styles.chuyenTien} keyboardType="number-pad"
+                        errorMessage={phone ? '' : "Bắt buộc"}
+                        onChangeText={(value) => setPhone(value)}
                     ></Input>
-                    <Input inputContainerStyle={styles.chuyenTien} placeholder="Nhập số tiền (đ)"
-                        
+                </View>
+                <View>
+                    <Text style={{ fontSize: 15, fontWeight: "bold", padding: 5 }}>Mật khẩu</Text>
+                    <Input inputContainerStyle={styles.chuyenTien}
+                        errorMessage={password ? '' : "Bắt buộc"}
+                        onChangeText={(value) => setPassword(value)}
                     ></Input>
                 </View>
             </View>
-
+            <Button title="Đăng nhập" buttonStyle={{ borderRadius: 5, backgroundColor: "#66cc9a" }} onPress={handleLogin}></Button>
         </SafeAreaView>
-
-
     )
 }
 
@@ -33,36 +62,12 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%"
     },
-    userName: {
-        color: "black",
-        fontWeight: "900"
-    },
-    notifiIcon: {
-        width: 20,
-        height: 20
-    },
-    chuyentienIcon: {
-        width: 20,
-        height: 20
-    },
-    naprutIcon: {
-        width: 20,
-        height: 20
-    },
-    showIcon: {
-        width: 20,
-        height: 20
-    },
-    mainFuncWrapper: {
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "center"
-    },
-    mainFunc: {
+
+    inputArea: {
         flexDirection: "column",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         width: "90%",
-        height: 100,
+        height: 200,
         backgroundColor: "#66cc9a",
         borderRadius: 5,
         position: "relative",
@@ -77,19 +82,9 @@ const styles = StyleSheet.create({
         shadowRadius: 2.62,
         elevation: 4,
     },
-    moneyArea: {
-        flexDirection: "row"
-    },
-    funcArea: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-    },
-    functions: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        width: "90%",
-        height: 100,
-        padding: 10,
+    chuyenTien: {
+        backgroundColor: "white",
+        borderRadius: 5,
+        padding: 5
     }
 });

@@ -4,7 +4,6 @@ import { Header, Divider } from "@rneui/base";
 
 const ChooseBank = ({ navigation }) => {
     return (
-
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <Header
                 backgroundColor="#66cc9a"
@@ -37,7 +36,7 @@ const ChooseBank = ({ navigation }) => {
                     <Image style={{
                         height: 60,
                         width: 60,
-                    }} source={require('../assets/logo-agribank.jpg')}></Image>
+                    }} source={require('../assets/bank2.jpg')}></Image>
                     <Text style={{ color: "black" }}>Agribank</Text>
                 </TouchableOpacity>
 
@@ -45,7 +44,7 @@ const ChooseBank = ({ navigation }) => {
                     <Image style={{
                         height: 60,
                         width: 60,
-                    }} source={require('../assets/logo-vietinbank.jpg')}></Image>
+                    }} source={require('../assets/bank1.jpg')}></Image>
                     <Text style={{ color: "black" }}>Vietinbank</Text>
                 </TouchableOpacity>
             </View>
