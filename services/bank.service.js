@@ -32,9 +32,28 @@ const getBanks = (token) => {
         });
 };
 
+const searchBankAccount = (bank_id, bank_account_number, token) => {
+    return axios
+        .post(API_URL + "search-account-bank", {
+            bank_id: bank_id,
+            bank_account_number: bank_account_number
+        }, {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+        .then((response) => {
+            return response.data.data;
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+};
+
 const bankService = {
     allLinkedBank,
-    getBanks
+    getBanks,
+    searchBankAccount
 };
 
 export default bankService;

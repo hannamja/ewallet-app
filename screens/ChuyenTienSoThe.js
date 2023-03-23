@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { Input } from '@rneui/themed';
 import { Button } from '@rneui/themed';
-const ChuyenTienSoThe = (props) => {
+const ChuyenTienSoThe = ({navigation, route}) => {
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <View style={{ width: "100%", padding: 10 }}><Text style={{ fontWeight: "bold", color: "#66cc9a" }}>Điền thông tin</Text></View>
@@ -38,6 +38,7 @@ const ChuyenTienSoThe = (props) => {
                         borderRadius: 50,
                         width: 200,
                     }}
+                    onPress={() => navigation.navigate("ConfirmChuyenSoThe")}
                 />
             </View>
         </SafeAreaView >

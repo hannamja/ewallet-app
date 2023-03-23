@@ -46,9 +46,30 @@ const transfer = (phone_number_source, money, bank_id, bank_account_des, note, t
         });
 };
 
+const transferToEwallet = (phone_number_source, phone_number_des, money, note, token) => {
+    return axios
+        .post(API_URL + "payments/transfer-to-ewallet", {
+            phone_number_source: phone_number_source,
+            phone_number_des: phone_number_des,
+            money: money,
+            note: note
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+};
+
 const transactionService = {
     deposit,
-    transfer
+    transfer,
+    transferToEwallet
 };
 
 export default transactionService;

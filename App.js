@@ -26,6 +26,8 @@ import ConfirmNap from './screens/ConfirmNap';
 import ConfirmRut from './screens/ConfirmRut';
 import ResultRut from './screens/ResultRut';
 import ResultNap from './screens/ResultNap';
+import ConfirmChuyenSoThe from './screens/ConfirmChuyenSoThe';
+import ResultChuyenSoThe from './screens/ResultChuyenSoThe';
 const Stack = createStackNavigator();
 const App = () => (
   <Provider store={store}>
@@ -35,7 +37,7 @@ const App = () => (
           headerShown: false
         }}
       >
-        <Stack.Screen name="Login" component={Login} />
+        {/* <Stack.Screen name="Login" component={Login} /> */}
         {/* Tabs */}
         <Stack.Screen name="Home" component={Tabs} />
 
@@ -51,6 +53,8 @@ const App = () => (
         <Stack.Screen name="ConfirmRut" component={ConfirmRut} />
         <Stack.Screen name="ResultRut" component={ResultRut} />
         <Stack.Screen name="ResultNap" component={ResultNap} />
+        <Stack.Screen name="ConfirmChuyenSoThe" component={ConfirmChuyenSoThe} />
+        <Stack.Screen name="ResultChuyenSoThe" component={ResultChuyenSoThe} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>

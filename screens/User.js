@@ -5,44 +5,25 @@ import { useState, useEffect } from "react";
 const image = require('../assets/banner.jpg');
 
 const User = ({ navigation, route }) => {
-    const [count, setCount] = useState(false)
-    const [count1, setCount1] = useState(0)
-    const [isActive, setActive] = useState(false)
-    const [checkPermiss, setPermiss] = useState(false)
-    useEffect(() => {
-        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA).then(response => { setPermiss(response) })
-        AppState.addEventListener('change', nextAppState => {
-            if (
-                AppState.currentState.match(/inactive|background/) &&
-                nextAppState === 'active'
-            ) {
-                PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA).then(response => { setPermiss(response) })
-            }
 
-            AppState.currentState = nextAppState;
-
-        });
-        return () => console.log('rm')
-
-    }, [])
     return (
-        <SafeAreaView style={{ backgroundColor: "white", height: "100%", width: "100%" }}>
+        <SafeAreaView style={{ backgroundColor: "white", height: "100%", width: "100%", flexDirection: "column", alignItems: "center" }}>
             <View style={styles.txt}>
-                <Text>{count1}</Text>
-                <Button title="click" onPress={() => setCount1(prev => prev + 1)} />
+                <Text style={{fontSize: 15, fontWeight: "bold"}}>Nguyen Van A</Text>
+                <Text>0987123123</Text>
+            </View>
+            <View style={{width: "100%"}}>
+                <Button title="Logout" color="warning"/>
             </View>
         </SafeAreaView>
-
-
     )
 }
 
 const styles = StyleSheet.create({
     txt: {
-        flex: 1,
-        fontSize: 300,
-        borderWidth: 20,
-        borderColor: "lime"
+        marginTop: 40,
+        marginBottom: 40,
+        width: "100%"
     }
 });
 export default User
