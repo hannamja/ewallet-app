@@ -13,7 +13,7 @@ const Main = ({ navigation }) => {
             <Header
                 backgroundColor="#66cc9a"
                 placement="left"
-                leftComponent={<View><Text>Hello, <Text style={styles.userName}>{/*user.userInfo.name*/} </Text></Text></View>}
+                leftComponent={<View><Text>Hello, <Text style={styles.userName}>{user.userInfo.name} </Text></Text></View>}
                 rightComponent={<Image source={require('../assets/notifi-icon.png')} style={styles.notifiIcon}></Image>}
             />
             <View style={styles.bannerContainer}>
@@ -29,7 +29,7 @@ const Main = ({ navigation }) => {
                             </TouchableOpacity>
                             : <TouchableOpacity onPress={() => setEye(!isEye)} style={styles.moneyArea}>
                                 <Image source={require('../assets/show.png')} style={styles.showIcon}></Image>
-                                <Text>{/*user.userInfo.balance*/}</Text>
+                                <Text>{user.userInfo.balance}</Text>
                             </TouchableOpacity>
 
                         }

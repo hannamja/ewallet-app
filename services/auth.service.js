@@ -13,8 +13,8 @@ const register = (username, email, password) => {
 const login = (phone_number, password) => {
   return axios
     .post(API_URL + "login", {
-      phone_number: '0987123123',
-      password: 'ThanhNghi123`',
+      phone_number: phone_number,
+      password: password,
     })
     .then((response) => {
       return response.data.data;
@@ -25,7 +25,7 @@ const login = (phone_number, password) => {
 };
 
 const logout = () => {
-
+  return null
 };
 
 const authService = {

@@ -5,19 +5,22 @@ import { Button } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { login } from '../slices/auth'
 import { useDispatch } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { useEffect } from 'react';
 const image = require('../assets/banner.jpg');
 export default function Login({ navigation }) {
-    const [isLogined, setLogined] = useState(false)
+
+    const [isEye, setEye] = useState(true)
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-
+    const isFocused = useIsFocused();
     const dispatch = useDispatch()
 
     const handleLogin = () => {
         if (phone == "") return
         if (password == "") return
-        
-        dispatch(login('abc', '123')).unwrap()
+        console.log(123)
+        dispatch(login(phone, password)).unwrap()
             .then(() => {
                 navigation.navigate("Home")
             })
@@ -25,6 +28,9 @@ export default function Login({ navigation }) {
                 console.log(err)
             });
     }
+    useEffect(() => {
+        isFocused ? setPassword("") : setPassword("")
+    }, [isFocused])
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <View style={styles.bannerContainer}>
@@ -42,9 +48,17 @@ export default function Login({ navigation }) {
                 </View>
                 <View>
                     <Text style={{ fontSize: 15, fontWeight: "bold", padding: 5 }}>Mật khẩu</Text>
-                    <Input inputContainerStyle={styles.chuyenTien}
+                    <Input inputContainerStyle={styles.chuyenTien} secureTextEntry={isEye ? true : false}
                         errorMessage={password ? '' : "Bắt buộc"}
                         onChangeText={(value) => setPassword(value)}
+                        value={password}
+                        rightIcon={isEye ?
+                            <TouchableOpacity onPress={() => setEye(!isEye)} style={styles.moneyArea}>
+                                <Image source={require('../assets/hide.png')} style={styles.showIcon}></Image>
+                            </TouchableOpacity>
+                            : <TouchableOpacity onPress={() => setEye(!isEye)} style={styles.moneyArea}>
+                                <Image source={require('../assets/show.png')} style={styles.showIcon}></Image>
+                            </TouchableOpacity>}
                     ></Input>
                 </View>
             </View>
@@ -62,7 +76,10 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%"
     },
-
+    showIcon: {
+        width: 20,
+        height: 20
+    },
     inputArea: {
         flexDirection: "column",
         justifyContent: "space-evenly",
