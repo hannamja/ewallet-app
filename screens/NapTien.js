@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import BankService from '../services/bank.service'
 import bankImgSource from '../assets/bankImg'
 import { useSelector } from "react-redux";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 const NapRut = ({ navigation }) => {
     const [money, setMoney] = useState(0)
     const { user } = useSelector((state) => state.auth)
@@ -21,7 +20,9 @@ const NapRut = ({ navigation }) => {
             setMoney(0)
         });
         BankService.allLinkedBank(user.userInfo.phone_number, user.token)
-            .then((data) => setBank(data))
+            .then((data) => {
+                setBank(data)
+            })
             .catch((err) => {
                 console.log(err)
             })

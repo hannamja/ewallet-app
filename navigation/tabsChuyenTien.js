@@ -1,12 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, Text, Image, TouchableOpacity, SafeAreaView } from "react-native";
 import { Header, Divider } from "@rneui/base";
-import ChuyenTienSoTK from '../screens/ChuyenTienSoTK';
+import ChuyenTienBank from '../screens/ChuyenTienBank';
 import ChuyenTienSoThe from '../screens/ChuyenTienSoThe';
 const Tab = createMaterialTopTabNavigator();
 
 
 function TabsChuyenTien(props) {
+
     return (
         <View style={{ width: "100%", height: "100%" }}>
             <Header
@@ -32,8 +33,8 @@ function TabsChuyenTien(props) {
                 }
             />
             <Tab.Navigator>
-                <Tab.Screen name="Chuyển theo số thẻ" component={ChuyenTienSoThe} />
-                <Tab.Screen name="Chuyển theo số tài khoản" component={ChuyenTienSoTK} listeners={{
+                <Tab.Screen name="Chuyển theo số thẻ" component={ChuyenTienBank} initialParams={{bank: props.route.params.bank}} />
+                <Tab.Screen name="Chuyển theo số tài khoản" component={ChuyenTienSoThe} listeners={{
                     tabPress: e => {
                         // Prevent default action
                         e.preventDefault();

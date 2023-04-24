@@ -1,8 +1,24 @@
 import React from "react";
 import { ImageBackground, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider } from "@rneui/base";
+import BankService from "../services/bank.service";
+import bankImgSource from '../assets/bankImg'
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ChooseBank = ({ navigation }) => {
+
+    const [bank, setBank] = useState([])
+    const { user } = useSelector((state) => state.auth)
+    useEffect(() => {
+        BankService.getBanks(user.token)
+            .then((data) => {
+                setBank(data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [])
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <Header
@@ -32,21 +48,19 @@ const ChooseBank = ({ navigation }) => {
             <View style={
                 { width: "100%", flexDirection: "row", justifyContent: "flex-start" }
             }>
-                <TouchableOpacity style={{ padding: 10 }} onPress={() => navigation.navigate("ChuyenTienStep1", { bankName: "agribank" })}>
-                    <Image style={{
-                        height: 60,
-                        width: 60,
-                    }} source={require('../assets/bank2.jpg')}></Image>
-                    <Text style={{ color: "black" }}>Agribank</Text>
-                </TouchableOpacity>
 
-                <TouchableOpacity style={{ padding: 10 }} onPress={() => navigation.navigate("ChuyenTienStep1", { bankName: "vietinbank" })}>
-                    <Image style={{
-                        height: 60,
-                        width: 60,
-                    }} source={require('../assets/bank1.jpg')}></Image>
-                    <Text style={{ color: "black" }}>Vietinbank</Text>
-                </TouchableOpacity>
+                {
+                    bank.map((item) => {
+                        return <TouchableOpacity key={item.id} style={{ padding: 10 }} onPress={() => navigation.navigate("ChuyenTienStep1", { bank: item })}>
+                            <Image style={{
+                                height: 60,
+                                width: 60,
+                            }} source={bankImgSource['bank' + item.id]}></Image>
+                            <Text style={{ color: "black" }}>{item.name}</Text>
+                        </TouchableOpacity>
+                    })
+                }
+
             </View>
         </SafeAreaView >
 

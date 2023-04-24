@@ -43,7 +43,7 @@ const searchBankAccount = (bank_id, bank_account_number, token) => {
             }
         })
         .then((response) => {
-            return response.data.data;
+            return response.data[0].data;
         })
         .catch((err) => {
             console.log(err)

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native'
 import { Header, Divider, Button } from "@rneui/base";
 import React from 'react'
 
-export default function ResultChuyenSoThe({navigation, route}) {
+export default function ResultChuyenToEwallet({navigation, route}) {
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <View style={styles.chuyenTienWrapper}>
@@ -10,20 +10,8 @@ export default function ResultChuyenSoThe({navigation, route}) {
                 <Text>{route.params.money == 0 ? 'Thất bại' : "Thành công"}</Text>
                 <View style={{ flexDirection: "column", width: "100%", padding: 10, borderBottomWidth: 1 }}>
                     <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-                        <Text>Chuyển về ngân hàng</Text>
-                        <Text>{route.params.bank}</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "column", width: "100%", padding: 10, borderBottomWidth: 1 }}>
-                    <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-                        <Text>Số thẻ</Text>
-                        <Text>{route.params.stk}</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: "column", width: "100%", padding: 10, borderBottomWidth: 1 }}>
-                    <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-                        <Text>Họ và tên</Text>
-                        <Text>{route.params.owner}</Text>
+                        <Text>Chuyển đến bạn bè</Text>
+                        <Text>{route.params.sdt}</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: "column", width: "100%", padding: 10, borderBottomWidth: 1 }}>

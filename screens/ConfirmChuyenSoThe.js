@@ -1,22 +1,24 @@
 import React from "react";
 import { ImageBackground, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider, Button } from "@rneui/base";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TransactionService from '../services/transaction.service'
-
+import { deposit, transfer } from '../slices/auth'
 export default function ConfirmChuyenSoThe({ navigation, route }) {
     const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     const handleSubmit = () => {
-        console.log(123)
-        navigation.navigate("ResultChuyenSoThe")
-        // TransactionService.transfer(route.params.bank.phone_number, route.params.money, route.params.bank.id, route.params.bank.bank_account_number, "Nap tien", user.token)
-        //     .then((data) => {
-        //         if (data.status == 0) navigation.navigate("ResultNap", { bank: route.params.bank.bank.name, money: route.params.money })
-        //         else navigation.navigate("ResultNap", { bank: route.params.bank.bank.name, money: 0 })
-        //     })
-        //     .catch((err) => {
-        //         console.log(err)
-        //     })
+        TransactionService.transfer(user.userInfo.phone_number, route.params.money, route.params.bank.id, route.params.account, "Nap tien", user.token)
+            .then((data) => {
+                if (data.codeErr == 0) {
+                    dispatch(transfer(route.params.money))
+                    navigation.navigate("ResultChuyenSoThe", { bank: route.params.bank.name, money: route.params.money, stk: route.params.account, owner: route.params.owner })
+                }
+                    else navigation.navigate("ResultChuyenSoThe", { bank: route.params.bank.name, money: 0 })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
@@ -46,11 +48,11 @@ export default function ConfirmChuyenSoThe({ navigation, route }) {
             <View style={{ flexDirection: "column", width: "100%", padding: 10, borderBottomWidth: 1 }}>
                 <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
                     <Text>Nguồn tiền</Text>
-                    <Text></Text>
+                    <Text>{route.params.bank.name}</Text>
                 </View>
                 <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
                     <Text>Số tiền</Text>
-                    <Text></Text>
+                    <Text>{route.params.money}</Text>
                 </View>
             </View>
 
@@ -64,7 +66,7 @@ export default function ConfirmChuyenSoThe({ navigation, route }) {
             <View style={{ flexDirection: "column", width: "100%", padding: 10, borderBottomWidth: 1 }}>
                 <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
                     <Text>Tổng số tiền</Text>
-                    <Text></Text>
+                    <Text>{route.params.money}</Text>
                 </View>
             </View>
 

@@ -1,15 +1,19 @@
 import React from "react";
 import { ImageBackground, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider, Button } from "@rneui/base";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TransactionService from '../services/transaction.service'
+import { deposit } from '../slices/auth'
 export default function ConfirmNap({ navigation, route }) {
     const { user } = useSelector((state) => state.auth)
-
+    const dispatch = useDispatch()
     const handleSubmit = () => {
-        TransactionService.transfer(route.params.bank.phone_number, route.params.money, route.params.bank.id, route.params.bank.bank_account_number, "Nap tien", user.token)
+        TransactionService.deposit(route.params.bank.id,route.params.money, route.params.bank.phone_number, "Nap tien", user.token)
             .then((data) => {
-                if (data.status == 0) navigation.navigate("ResultNap", { bank: route.params.bank.bank.name, money: route.params.money })
+                if (data.codeErr == 0) {
+                    dispatch(deposit(route.params.money))
+                    navigation.navigate("ResultNap", { bank: route.params.bank.bank.name, money: route.params.money })
+                }
                 else navigation.navigate("ResultNap", { bank: route.params.bank.bank.name, money: 0 })
             })
             .catch((err) => {

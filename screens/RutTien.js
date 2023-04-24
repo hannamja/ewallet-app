@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import BankService from '../services/bank.service'
 import bankImgSource from '../assets/bankImg'
 import { useSelector } from "react-redux";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+
 const RutTien = ({ navigation }) => {
     const { user } = useSelector((state) => state.auth)
     const [money, setMoney] = useState(0)

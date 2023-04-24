@@ -5,9 +5,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Header, Button, Divider } from "@rneui/base";
 import { Input, Dialog } from "@rneui/themed";
 import { useState } from "react";
+
+import { useSelector } from "react-redux";
+
 const QRCodeThanhToan = ({ navigation, route }) => {
     const [isActive, setActive] = useState(false)
 
+    const [money, setMoney] = useState(0)
+    const { user } = useSelector((state) => state.auth)
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <Header
@@ -47,7 +52,7 @@ const QRCodeThanhToan = ({ navigation, route }) => {
 
             <View style={{ flexDirection: "column", alignItems: "center", width: "100%", padding: 10 }}>
                 <View style={{ marginTop: 10 }}>
-                    <QRCode value="123">
+                    <QRCode value={JSON.stringify({ phone_number: user.userInfo.phone_number, money: money })}>
                     </QRCode>
                 </View>
                 <Button
@@ -72,21 +77,16 @@ const QRCodeThanhToan = ({ navigation, route }) => {
                 </View>
 
                 <View>
-                    <Input inputContainerStyle={styles.chuyenTien} keyboardType="numeric" placeholder="Số tiền" autoFocus>
+                    <Input onChangeText={(e) => e == '' ? setMoney(0) : setMoney(parseInt(e))} inputContainerStyle={styles.chuyenTien} keyboardType="numeric" placeholder="Số tiền" autoFocus>
 
                     </Input>
                 </View>
 
-                <View>
-                    <Input inputContainerStyle={styles.chuyenTien} placeholder="Lời nhắn">
-
-                    </Input>
-                </View>
 
                 <Dialog.Actions>
-                    <Dialog.Button title="Xong">
+                    <Dialog.Button title="Xong" onPress={() => setActive(!isActive)}>
                     </Dialog.Button>
-                    <Dialog.Button title="Hủy">
+                    <Dialog.Button title="Hủy" onPress={() => { setMoney(0); setActive(!isActive) }}>
                     </Dialog.Button>
                 </Dialog.Actions>
             </Dialog>

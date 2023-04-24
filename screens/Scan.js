@@ -5,22 +5,52 @@ import { Input, Dialog } from "@rneui/themed";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 
-
+import { useDispatch, useSelector } from "react-redux";
+import TransactionService from '../services/transaction.service'
+import { deposit, transfer } from '../slices/auth'
+import { useIsFocused } from "@react-navigation/native";
 const Scan = ({ navigation, route }) => {
     const appState = useRef(AppState.currentState);
     const [isActive, setActive] = useState(false)
     const [checkPermiss, setPermiss] = useState(false)
     const [scanned, setScanned] = useState(false);
 
+    const [confirm, setConfirm] = useState(false)
+    const [note, setNote] = useState('')
+    const [money, setMoney] = useState(0)
+
+    const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const [data, setData] = useState({})
+
+    const isFocused = useIsFocused()
     const requestCameraPermission = async () => {
         // Open the custom settings if the app has one
         await Linking.openSettings()
     }
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        setActive(true)
+        console.log(123)
+        const json = JSON.parse(data)
+        setData(json)
+        if (json.money == 0) setActive(true)
+        else setConfirm(true)
         console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
+
+    const handleSubmit = () => {
+        TransactionService.transferToEwallet(user.userInfo.phone_number, data.phone_number, data.money, note, user.token)
+            .then((data) => {
+                if (data.status == 'success') {
+                    dispatch(transfer(route.params.money))
+                    navigation.navigate("ResultChuyenToEwallet", { money: money, sdt: data.phone_number })
+                }
+                else navigation.navigate("ResultChuyenToEwallet", { money: 0, sdt: data.phone_number })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
     useEffect(() => {
         PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA).then(response => { setPermiss(response) })
         const subscription = AppState.addEventListener('change', nextAppState => {
@@ -28,7 +58,6 @@ const Scan = ({ navigation, route }) => {
                 appState.current.match(/inactive|background/) &&
                 nextAppState === 'active'
             ) {
-                console.log('App has come to the foreground!')
                 PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA).then(response => { setPermiss(response) })
             }
 
@@ -46,10 +75,13 @@ const Scan = ({ navigation, route }) => {
                     <View style={{
                         width: "100%", height: "100%"
                     }}>
-                        <BarCodeScanner
-                            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                            style={StyleSheet.absoluteFillObject}
-                        />
+                        {
+                            isFocused ? <BarCodeScanner
+                                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                                style={StyleSheet.absoluteFillObject}
+                            /> : ''
+                        }
+
                     </View>
 
                     <View style={styles.buttonMoney}>
@@ -81,24 +113,53 @@ const Scan = ({ navigation, route }) => {
                 </View>
 
                 <View style={styles.dialogCT}>
-                    <Input keyboardType="numeric" placeholder="Số tiền" autoFocus>
+                    <Input onChangeText={(e) => e == '' ? setMoney(0) : setMoney(parseFloat(e))} keyboardType="numeric" placeholder="Số tiền" autoFocus>
 
                     </Input>
                 </View>
 
                 <View style={styles.dialogCT}>
-                <Input placeholder="Lời nhắn">
+                    <Input onChangeText={(e) => setNote(e)} placeholder="Lời nhắn">
 
-                </Input>
-            </View>
+                    </Input>
+                </View>
 
-            <Dialog.Actions>
-                <Dialog.Button title="Xong">
-                </Dialog.Button>
-                <Dialog.Button title="Hủy" onPress={() => setActive(!isActive)}>
-                </Dialog.Button>
-            </Dialog.Actions>
-        </Dialog>
+                <Dialog.Actions>
+                    <Dialog.Button title="Xong" onPress={handleSubmit}>
+                    </Dialog.Button>
+                    <Dialog.Button title="Hủy" onPress={() => setActive(!isActive)}>
+                    </Dialog.Button>
+                </Dialog.Actions>
+            </Dialog>
+
+            <Dialog style={{
+                borderRadius: 5,
+            }}
+                isVisible={confirm}
+                onBackdropPress={() => setConfirm(false)}
+            >
+                <Dialog.Title title="Thực hiện chuyển tiền"></Dialog.Title>
+                <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+                    <Text>SĐT nhận</Text>
+                    <Text>{data.phone_number}</Text>
+                </View>
+                <View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
+                    <Text>Số tiền</Text>
+                    <Text>{data.money}</Text>
+                </View>
+                <View style={styles.dialogCT}>
+                    <Input onChangeText={(e) => setNote(e)} placeholder="Lời nhắn">
+
+                    </Input>
+                </View>
+
+                <Dialog.Actions>
+                    <Dialog.Button title="Xong" onPress={handleSubmit}>
+                    </Dialog.Button>
+                    <Dialog.Button title="Hủy" onPress={() => setConfirm(!confirm)}>
+                    </Dialog.Button>
+                </Dialog.Actions>
+            </Dialog>
         </SafeAreaView >
 
     )

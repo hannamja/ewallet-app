@@ -28,6 +28,9 @@ import ResultRut from './screens/ResultRut';
 import ResultNap from './screens/ResultNap';
 import ConfirmChuyenSoThe from './screens/ConfirmChuyenSoThe';
 import ResultChuyenSoThe from './screens/ResultChuyenSoThe';
+import ChuyenTienSoThe from './screens/ChuyenTienSoThe';
+import ConfirmChuyenToEwallet from './screens/ConfirmChuyenToEwallet';
+import ResultChuyenToEwallet from './screens/ResultChuyenToEwallet';
 const Stack = createStackNavigator();
 const App = () => (
   <Provider store={store}>
@@ -37,7 +40,7 @@ const App = () => (
           headerShown: false
         }}
       >
-        <Stack.Screen name="Login" component={Login} />
+        {/* <Stack.Screen name="Login" component={Login} /> */}
         {/* Tabs */}
         <Stack.Screen name="Home" component={Tabs} />
 
@@ -55,6 +58,9 @@ const App = () => (
         <Stack.Screen name="ResultNap" component={ResultNap} />
         <Stack.Screen name="ConfirmChuyenSoThe" component={ConfirmChuyenSoThe} />
         <Stack.Screen name="ResultChuyenSoThe" component={ResultChuyenSoThe} />
+        <Stack.Screen name="ChuyenTienSoThe" component={ChuyenTienSoThe} />
+        <Stack.Screen name="ConfirmChuyenToEwallet" component={ConfirmChuyenToEwallet} />
+        <Stack.Screen name="ResultChuyenToEwallet" component={ResultChuyenToEwallet} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>
