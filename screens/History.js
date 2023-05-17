@@ -6,15 +6,51 @@ import { useState } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { useEffect } from "react";
 const image = require('../assets/banner.jpg');
+import HistoryService from "../services/history.service";
+import { useSelector } from "react-redux";
 const History = () => {
+    const { user } = useSelector((state) => state.auth)
+
     const fakeData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const [history, setHistory] = useState([])
+    useEffect(() => {
+        HistoryService.allPayments(user.userInfo.phone_number, user.token)
+            .then((data) => {
+                setHistory(data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [])
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
-            <FlatList style={{ marginTop: 40 }}
-                data={fakeData}
+            <Header
+                backgroundColor="#66cc9a"
+            />
+            <FlatList style={{ width: "100%" }}
+                data={history}
                 renderItem={({ item, index }) => <TouchableOpacity>
-                    <View style={{}}>
-                        <Text style={{ color: "black", fontSize: 15, fontWeight: "bold" }}>{item}</Text>
+                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, padding: 10 }}>
+                        <View>
+
+                            {(() => {
+                                if (item.type == 1) return <Text style={{ fontWeight: "bold" }}>Chuyển tiền</Text>
+                                if (item.type == 2) return <Text style={{ fontWeight: "bold" }}>Rút tiền</Text>
+                                if (item.type == 3) return <Text style={{ fontWeight: "bold" }}>Nạp tiền</Text>
+                                if (item.type == 4) return <Text style={{ fontWeight: "bold" }}>Nhận tiền</Text>
+                            })()}
+
+                            <Text>{item.create}</Text>
+                        </View>
+                        <View>
+                            {(() => {
+                                if (item.type == 1) return <Text style={{ color: 'orange' }}>-{item.money}</Text>
+                                if (item.type == 2) return <Text style={{ color: 'orange' }}>-{item.money}</Text>
+                                if (item.type == 3) return <Text style={{ color: 'lime' }}>+{item.money}</Text>
+                                if (item.type == 4) return <Text style={{ color: 'lime' }}>+{item.money}</Text>
+                            })()}
+                            <Text style={{ color: 'lime' }}>{item.status}</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>}
             />

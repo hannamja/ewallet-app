@@ -45,10 +45,10 @@ const initialState = {
       "name": "Nguyen Van A",
       "dob": "2002-01-11",
       "address": "12 Le Van Viet, phuong Hiep Phu, tp Thu Duc, tp Ho Chi Minh",
-      "balance": 650000,
+      "balance": 840000,
       "created_at": "2023-02-24T14:18:13.000000Z"
     },
-    "token": "40|U8NMz33FNU0REbZAlql5c3cOroSw1rNaEcdkf67E"
+    "token": "47|XIU7jdKLDmP6sIFlUqR4KS573K0GkpwsCqlP7amU"
   }
 }
 

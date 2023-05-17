@@ -60,7 +60,7 @@ const ChuyenTien = ({ navigation }) => {
                 <TouchableOpacity style={
                     { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 10 }
                 }
-                    onPress={() => navigation.navigate("ChooseBank")}
+                    onPress={() => navigation.navigate("ChooseBank", {add: false})}
                 >
                     <View style={
                         { width: 250, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }

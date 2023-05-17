@@ -1,18 +1,18 @@
 import axios from "axios";
-const API_URL = "http://10.0.2.2:4000/";
+const API_URL = "http://192.168.0.2:4000/";
 
 const allPayments = (phone_number, token) => {
-    axios
-        .get(API_URL + "all-linked-bank/" + phone_number, {
+    return axios
+        .get(API_URL + "all-payments/" + phone_number, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
         .then((response) => {
-            return res.json(response.data.data);
+            return response.data.data;
         })
         .catch((error) => {
-            return res.json(error);
+            console.log(err)
         });
 }
 

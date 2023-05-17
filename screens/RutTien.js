@@ -166,6 +166,7 @@ const RutTien = ({ navigation }) => {
                         borderRadius: 50,
                         width: 200,
                     }}
+                    disabled={money == 0 ? true : false}
                     onPress={() => navigation.navigate("ConfirmRut", { bank: bank[activeBank], money: money })}
                 />
             </View>

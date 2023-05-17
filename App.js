@@ -31,6 +31,7 @@ import ResultChuyenSoThe from './screens/ResultChuyenSoThe';
 import ChuyenTienSoThe from './screens/ChuyenTienSoThe';
 import ConfirmChuyenToEwallet from './screens/ConfirmChuyenToEwallet';
 import ResultChuyenToEwallet from './screens/ResultChuyenToEwallet';
+import AddLinkedBank from './screens/AddLinkedBank';
 const Stack = createStackNavigator();
 const App = () => (
   <Provider store={store}>
@@ -61,6 +62,7 @@ const App = () => (
         <Stack.Screen name="ChuyenTienSoThe" component={ChuyenTienSoThe} />
         <Stack.Screen name="ConfirmChuyenToEwallet" component={ConfirmChuyenToEwallet} />
         <Stack.Screen name="ResultChuyenToEwallet" component={ResultChuyenToEwallet} />
+        <Stack.Screen name="AddBank" component={AddLinkedBank} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>

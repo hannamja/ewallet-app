@@ -142,7 +142,9 @@ const NapRut = ({ navigation }) => {
 
                 <TouchableOpacity style={{
                     flexDirection: "row", justifyContent: "flex-start", marginTop: 20
-                }}>
+                }}
+                    onPress={() => navigation.navigate('ChooseBank', { add: true })}
+                >
                     <Image source={require('../assets/mathematics-sign-plus-outline-icon.png')} style={
                         {
                             width: 20,
@@ -164,6 +166,7 @@ const NapRut = ({ navigation }) => {
                         borderRadius: 50,
                         width: 200,
                     }}
+                    disabled={money == 0 ? true : false}
                     onPress={() => navigation.navigate("ConfirmNap", { bank: bank[activeBank], money: money })}
                 />
             </View>

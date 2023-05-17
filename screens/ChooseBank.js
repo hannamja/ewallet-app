@@ -1,12 +1,12 @@
 import React from "react";
-import { ImageBackground, View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { Header, Divider } from "@rneui/base";
 import BankService from "../services/bank.service";
 import bankImgSource from '../assets/bankImg'
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const ChooseBank = ({ navigation }) => {
+const ChooseBank = ({ navigation, route }) => {
 
     const [bank, setBank] = useState([])
     const { user } = useSelector((state) => state.auth)
@@ -38,20 +38,24 @@ const ChooseBank = ({ navigation }) => {
                                 }}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: "white", marginLeft: 10 }}>Chuyển Tiền</Text>
+                        <Text style={{ color: "white", marginLeft: 10 }}>{(route.params.add) ? 'Thêm liên kết' : 'Chuyển Tiền'}</Text>
                     </View>
 
                 }
             />
 
-            <View style={{ width: "100%", padding: 10 }}><Text style={{ fontWeight: "bold", color: "#66cc9a" }}>Ngân hàng hỗ trợ chuyển tiền</Text></View>
+            <View style={{ width: "100%", padding: 10 }}><Text style={{ fontWeight: "bold", color: "#66cc9a" }}>{(route.params.add) ? 'Ngân hàng hỗ trợ liên kết' : 'Ngân hàng hỗ trợ chuyển tiền'}</Text></View>
             <View style={
                 { width: "100%", flexDirection: "row", justifyContent: "flex-start" }
             }>
 
                 {
                     bank.map((item) => {
-                        return <TouchableOpacity key={item.id} style={{ padding: 10 }} onPress={() => navigation.navigate("ChuyenTienStep1", { bank: item })}>
+                        return <TouchableOpacity key={item.id} style={{ padding: 10 }} onPress={() =>
+                            (route.params.add) ? navigation.navigate("AddBank", { bank: item })
+                                : navigation.navigate("ChuyenTienStep1", { bank: item })
+                        }
+                        >
                             <Image style={{
                                 height: 60,
                                 width: 60,
