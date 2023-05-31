@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, SafeAreaView, ToastAndroid, TouchableOpacity, Image} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ToastAndroid, TouchableOpacity, Image } from "react-native";
 import { Header, Button } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { useState } from "react";
@@ -13,7 +13,8 @@ const AddLinkedBank = ({ navigation, route }) => {
     const findTKOwner = () => {
         bankService.searchBankAccount(route.params.bank.id, stk, user.token)
             .then((data) => {
-                setOwner(data.name)
+                if (data) setOwner(data.name)
+                else setOwner('')
             })
             .catch()
     }
@@ -30,7 +31,7 @@ const AddLinkedBank = ({ navigation, route }) => {
     }
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
-           <Header
+            <Header
                 backgroundColor="#66cc9a"
                 placement="left"
                 leftComponent={
@@ -56,7 +57,7 @@ const AddLinkedBank = ({ navigation, route }) => {
                 <Text style={
                     { position: "relative", top: 18, left: 20, zIndex: 999, fontWeight: "bold", backgroundColor: "white", width: 90, paddingLeft: 5 }
                 }>Số tài khoản</Text>
-                <Input onChangeText={(e) => setSTK(e)} onBlur={findTKOwner} keyboardType="numeric" inputContainerStyle={styles.chuyenTien} placeholder='0123456789' errorMessage={stk.length == 16 ? '' : "Số tài khoản không hợp lệ"} errorStyle={{ top: 10 }} />
+                <Input onChangeText={(e) => setSTK(e)} onBlur={findTKOwner} keyboardType="numeric" inputContainerStyle={styles.chuyenTien} placeholder='0123456789' errorMessage={stk.length == 16 && owner != '' ? '' : "Số tài khoản không hợp lệ hoặc không tồn tại"} errorStyle={{ top: 10 }} />
             </View>
 
             <View style={{ width: "100%" }}>

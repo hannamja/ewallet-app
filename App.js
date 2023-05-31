@@ -32,6 +32,9 @@ import ChuyenTienSoThe from './screens/ChuyenTienSoThe';
 import ConfirmChuyenToEwallet from './screens/ConfirmChuyenToEwallet';
 import ResultChuyenToEwallet from './screens/ResultChuyenToEwallet';
 import AddLinkedBank from './screens/AddLinkedBank';
+import LinkedBankDetail from './screens/LinkedBankDetail';
+import AllBank from './screens/AllBank';
+import HistoryDetail from './screens/HistoryDetail';
 const Stack = createStackNavigator();
 const App = () => (
   <Provider store={store}>
@@ -41,7 +44,7 @@ const App = () => (
           headerShown: false
         }}
       >
-        {/* <Stack.Screen name="Login" component={Login} /> */}
+        <Stack.Screen name="Login" component={Login} />
         {/* Tabs */}
         <Stack.Screen name="Home" component={Tabs} />
 
@@ -63,6 +66,9 @@ const App = () => (
         <Stack.Screen name="ConfirmChuyenToEwallet" component={ConfirmChuyenToEwallet} />
         <Stack.Screen name="ResultChuyenToEwallet" component={ResultChuyenToEwallet} />
         <Stack.Screen name="AddBank" component={AddLinkedBank} />
+        <Stack.Screen name="AllBank" component={AllBank} />
+        <Stack.Screen name="LinkedBankDetail" component={LinkedBankDetail} />
+        <Stack.Screen name="HistoryDetail" component={HistoryDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>

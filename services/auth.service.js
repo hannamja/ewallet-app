@@ -17,6 +17,7 @@ const login = (phone_number, password) => {
       password: password,
     })
     .then((response) => {
+      console.log(response.data.data)
       return response.data.data;
     })
     .catch((err) => {

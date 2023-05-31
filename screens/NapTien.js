@@ -116,7 +116,7 @@ const NapRut = ({ navigation }) => {
             <View style={{ width: "100%", padding: 10 }}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <Text>Ngân hàng liên kết</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate('AllBank')}>
                         <Text style={{ color: "#86d6e4" }}>Xem tất cả</Text>
                     </TouchableOpacity>
                 </View>

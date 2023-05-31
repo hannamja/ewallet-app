@@ -24,11 +24,12 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ username, password }, thunkAPI) => {
+  async ({ phone, password }, thunkAPI) => {
     try {
-      const data = await AuthService.login(username, password);
+      const data = await AuthService.login(phone, password);
       return { user: data };
     } catch (error) {
+
     }
   }
 );
@@ -39,17 +40,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 });
 
 const initialState = {
-  user: {
-    "userInfo": {
-      "phone_number": "0987123123",
-      "name": "Nguyen Van A",
-      "dob": "2002-01-11",
-      "address": "12 Le Van Viet, phuong Hiep Phu, tp Thu Duc, tp Ho Chi Minh",
-      "balance": 840000,
-      "created_at": "2023-02-24T14:18:13.000000Z"
-    },
-    "token": "47|XIU7jdKLDmP6sIFlUqR4KS573K0GkpwsCqlP7amU"
-  }
+  user: null
 }
 
 const authSlice = createSlice({

@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://192.168.0.2:4000/";
+const API_URL = "http://10.0.2.2:4000/";
 
 
 const allLinkedBank = (phone_number, token) => {
@@ -34,7 +34,7 @@ const getBanks = (token) => {
 
 const addLinkedBank = (phone_number, bank_account_number, bank_id, token) => {
     return axios
-        .post(API_URL + "search-account-bank", {
+        .post(API_URL + "add-bank", {
             phone_number: phone_number,
             bank_id: bank_id,
             bank_account_number: bank_account_number
@@ -44,7 +44,25 @@ const addLinkedBank = (phone_number, bank_account_number, bank_id, token) => {
             }
         })
         .then((response) => {
-            return response.data[0].data;
+            return response.data;
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+}
+
+const delLinkedBank = (id, token) => {
+    console.log(token)
+    return axios
+        .post(API_URL + "del-bank/" + id, {
+            
+        }, {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+        .then((response) => {
+            return response.data;
         })
         .catch((err) => {
             console.log(err)
@@ -73,7 +91,8 @@ const bankService = {
     allLinkedBank,
     getBanks,
     searchBankAccount,
-    addLinkedBank
+    addLinkedBank,
+    delLinkedBank
 };
 
 export default bankService;

@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, Image } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "@rneui/base";
@@ -11,6 +11,7 @@ const image = require('../assets/banner.jpg');
 export default function Login({ navigation }) {
 
     const [isEye, setEye] = useState(true)
+    const [isLoading, setLoading] = useState(false)
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
     const isFocused = useIsFocused();
@@ -19,12 +20,14 @@ export default function Login({ navigation }) {
     const handleLogin = () => {
         if (phone == "") return
         if (password == "") return
-        console.log(123)
-        dispatch(login(phone, password)).unwrap()
-            .then(() => {
+        setLoading(true)
+        dispatch(login({ phone, password })).unwrap()
+            .then((data) => {
+                setLoading(false)
                 navigation.navigate("Home")
             })
             .catch((err) => {
+                setLoading(false)
                 console.log(err)
             });
     }
@@ -47,22 +50,29 @@ export default function Login({ navigation }) {
                     ></Input>
                 </View>
                 <View>
-                    <Text style={{ fontSize: 15, fontWeight: "bold", padding: 5 }}>Mật khẩu</Text>
+                    <Text style={{ fontSize: 15, fontWeight: "bold" }}>Mật khẩu</Text>
                     <Input inputContainerStyle={styles.chuyenTien} secureTextEntry={isEye ? true : false}
                         errorMessage={password ? '' : "Bắt buộc"}
                         onChangeText={(value) => setPassword(value)}
                         value={password}
                         rightIcon={isEye ?
-                            <TouchableOpacity onPress={() => setEye(!isEye)} style={styles.moneyArea}>
+                            <TouchableOpacity onPress={() => setEye(!isEye)}>
                                 <Image source={require('../assets/hide.png')} style={styles.showIcon}></Image>
                             </TouchableOpacity>
-                            : <TouchableOpacity onPress={() => setEye(!isEye)} style={styles.moneyArea}>
+                            : <TouchableOpacity onPress={() => setEye(!isEye)}>
                                 <Image source={require('../assets/show.png')} style={styles.showIcon}></Image>
                             </TouchableOpacity>}
                     ></Input>
                 </View>
             </View>
-            <Button title="Đăng nhập" buttonStyle={{ borderRadius: 5, backgroundColor: "#66cc9a" }} onPress={handleLogin}></Button>
+            {
+                isLoading ? <View style={[styles.container, styles.horizontal]}>
+                    <ActivityIndicator size="small" color="#0000ff" />
+                </View> : <Button title="Đăng nhập" buttonStyle={{ borderRadius: 5, backgroundColor: "#66cc9a" }} onPress={handleLogin}
+                    disabled={phone && password ? false : true}
+                ></Button>
+            }
+
         </SafeAreaView>
     )
 }
@@ -101,7 +111,6 @@ const styles = StyleSheet.create({
     },
     chuyenTien: {
         backgroundColor: "white",
-        borderRadius: 5,
-        padding: 5
+        borderRadius: 5
     }
 });

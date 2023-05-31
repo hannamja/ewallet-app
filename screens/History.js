@@ -8,10 +8,9 @@ import { useEffect } from "react";
 const image = require('../assets/banner.jpg');
 import HistoryService from "../services/history.service";
 import { useSelector } from "react-redux";
-const History = () => {
+const History = ({ navigation }) => {
     const { user } = useSelector((state) => state.auth)
 
-    const fakeData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const [history, setHistory] = useState([])
     useEffect(() => {
         HistoryService.allPayments(user.userInfo.phone_number, user.token)
@@ -29,13 +28,13 @@ const History = () => {
             />
             <FlatList style={{ width: "100%" }}
                 data={history}
-                renderItem={({ item, index }) => <TouchableOpacity>
+                renderItem={({ item, index }) => <TouchableOpacity onPress={() => navigation.navigate('HistoryDetail', { detail: item })}>
                     <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, padding: 10 }}>
                         <View>
 
                             {(() => {
-                                if (item.type == 1) return <Text style={{ fontWeight: "bold" }}>Chuyển tiền</Text>
-                                if (item.type == 2) return <Text style={{ fontWeight: "bold" }}>Rút tiền</Text>
+                                if (item.type == 1) return <Text style={{ fontWeight: "bold" }}>Chuyển tiền đến ví</Text>
+                                if (item.type == 2) return <Text style={{ fontWeight: "bold" }}>Chuyển tiền đến tài khoản</Text>
                                 if (item.type == 3) return <Text style={{ fontWeight: "bold" }}>Nạp tiền</Text>
                                 if (item.type == 4) return <Text style={{ fontWeight: "bold" }}>Nhận tiền</Text>
                             })()}
