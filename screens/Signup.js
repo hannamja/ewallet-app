@@ -1,39 +1,31 @@
-import { View, Text, SafeAreaView, StyleSheet, Image, ActivityIndicator, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, Header } from "@rneui/base";
 import { Input } from "@rneui/themed";
-import { login } from '../slices/auth'
-import { useDispatch } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
-import { useEffect } from 'react';
-const image = require('../assets/banner.jpg');
-
+import { ToastAndroid } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 export default function Signup({ navigation }) {
     const [isEye, setEye] = useState(true)
-    const [isLoading, setLoading] = useState(false)
+    const [username, setUserName] = useState("")
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-    const isFocused = useIsFocused();
-    const dispatch = useDispatch()
-
-    const handleLogin = () => {
-        if (phone == "") return
-        if (password == "") return
-        setLoading(true)
-        dispatch(login({ phone, password })).unwrap()
-            .then((data) => {
-                setLoading(false)
-                navigation.navigate("Home")
-            })
-            .catch((err) => {
-                setLoading(false)
-                console.log(err)
-            });
+    const [passwordConfirm, setPasswordConfirm] = useState("")
+    const [add, setAdd] = useState("")
+    const [dob, setDob] = useState(new Date())
+    const [picker, setPicker] = useState(false)
+    const handlClick = () => {
+        if (phone.length != 10) return
+        if (password !== passwordConfirm) {
+            ToastAndroid.show('Mật khẩu không khớp', ToastAndroid.TOP)
+            return
+        }
+        // if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])([a-zA-Z0-9]{8,})(?=.*[!@#$%^&*`]{1,})$/)) {
+        //     ToastAndroid.show('Mật khẩu phải từ 8 kí tự và có 1 kí tự hoa và 1 kí tự thường và 1 kí tự đặc biệt', ToastAndroid.LONG)
+        //     return
+        // }
+        navigation.navigate('OTP', { username: username, phone: phone, password: password, add: add, dob: dob.getUTCFullYear().toString() + '/' + dob.getUTCMonth().toString() + '/' + dob.getUTCDate().toString() })
     }
-    useEffect(() => {
-        isFocused ? setPassword("") : setPassword("")
-    }, [isFocused])
     return (
         <SafeAreaView style={{ backgroundColor: "white", height: "100%" }}>
             <Header
@@ -52,14 +44,15 @@ export default function Signup({ navigation }) {
                         <Text style={{ fontSize: 15, fontWeight: "bold", padding: 5 }}>Họ và tên</Text>
                         <Input inputContainerStyle={styles.chuyenTien} keyboardType="number-pad"
                             errorMessage={phone ? '' : "Bắt buộc"}
-                            onChangeText={(value) => setPhone(value)}
+                            onChangeText={(value) => { setUserName(value) }}
                         ></Input>
                     </View>
                     <View>
                         <Text style={{ fontSize: 15, fontWeight: "bold" }}>Mật khẩu</Text>
                         <Input inputContainerStyle={styles.chuyenTien} secureTextEntry={isEye ? true : false}
                             errorMessage={password ? '' : "Bắt buộc"}
-                            onChangeText={(value) => setPassword(value)}
+                            onChangeText={(value) => { setPassword(value) }}
+
                             value={password}
                             rightIcon={isEye ?
                                 <TouchableOpacity onPress={() => setEye(!isEye)}>
@@ -74,8 +67,9 @@ export default function Signup({ navigation }) {
                         <Text style={{ fontSize: 15, fontWeight: "bold" }}>Nhập lại mật khẩu</Text>
                         <Input inputContainerStyle={styles.chuyenTien} secureTextEntry={isEye ? true : false}
                             errorMessage={password ? '' : "Bắt buộc"}
-                            onChangeText={(value) => setPassword(value)}
-                            value={password}
+                            onChangeText={(value) => { setPasswordConfirm(value) }}
+
+                            value={passwordConfirm}
                             rightIcon={isEye ?
                                 <TouchableOpacity onPress={() => setEye(!isEye)}>
                                     <Image source={require('../assets/hide.png')} style={styles.showIcon}></Image>
@@ -87,32 +81,54 @@ export default function Signup({ navigation }) {
                     </View>
                     <View>
                         <Text style={{ fontSize: 15, fontWeight: "bold" }}>Địa chỉ</Text>
-                        <Input inputContainerStyle={styles.chuyenTien} secureTextEntry={isEye ? true : false}
+                        <Input inputContainerStyle={styles.chuyenTien}
                             errorMessage={password ? '' : "Bắt buộc"}
-                            onChangeText={(value) => setPassword(value)}
-                            value={password}
+                            onChangeText={(value) => setAdd(value)}
+                            value={add}
                         ></Input>
                     </View>
                     <View>
                         <Text style={{ fontSize: 15, fontWeight: "bold" }}>Ngày sinh</Text>
-                        <Input inputContainerStyle={styles.chuyenTien} secureTextEntry={isEye ? true : false}
-                            errorMessage={password ? '' : "Bắt buộc"}
-                            onChangeText={(value) => setPassword(value)}
-                            value={password}
-                        ></Input>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
                         {
-                            isLoading ? <View style={[styles.container, styles.horizontal]}>
-                                <ActivityIndicator size="small" color="#0000ff" />
-                            </View> : <Button title="Đăng kí" buttonStyle={{
-                                backgroundColor: "#66cc9a",
-                                borderRadius: 50,
-                                width: 200,
-                            }} onPress={() => navigation.navigate('OTP')}
-
-                            ></Button>
+                            picker && (<DatePicker
+                                modal
+                                mode='date'
+                                open={picker}
+                                date={dob}
+                                onConfirm={(date) => {
+                                    setDob(date)
+                                    setPicker(!picker)
+                                }}
+                                onCancel={() => {
+                                    setPicker(!picker)
+                                }}
+                            />)
                         }
+                        {
+                            !picker && (<Pressable>
+
+                                <Input inputContainerStyle={styles.chuyenTien}
+                                    errorMessage={password ? '' : "Bắt buộc"}
+                                    onChangeText={(value) => setDob(value)}
+                                    value={dob.getUTCFullYear().toString() + '/' + dob.getUTCMonth().toString() + '/' + dob.getUTCDate().toString()}
+                                    onPressIn={() => setPicker(!picker)}
+                                ></Input>
+                            </Pressable>)
+                        }
+
+
+                    </View>
+
+                    <View style={{ alignItems: 'center' }}>
+
+                        <Button title="Đăng kí" buttonStyle={{
+                            backgroundColor: "#66cc9a",
+                            borderRadius: 50,
+                            width: 200,
+                        }} onPress={handlClick}
+
+                        ></Button>
+
                     </View>
 
                 </View>

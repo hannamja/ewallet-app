@@ -7,7 +7,8 @@ const image = require('../assets/banner.jpg');
 const Main = ({ navigation }) => {
     const [isEye, setEye] = useState(false)
     const { user } = useSelector((state) => state.auth)
-
+    console.log('signup', user)
+    console.log(user.token)
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white" }}>
             <Header

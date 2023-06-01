@@ -1,40 +1,42 @@
 import { View, Text, SafeAreaView, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button, Header } from "@rneui/base";
+import { Button, Header, getIconType } from "@rneui/base";
 import { Input } from "@rneui/themed";
-import { login } from '../slices/auth'
+import { register } from '../slices/auth'
 import { useDispatch } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
 import { useEffect } from 'react';
+import authService from '../services/auth.service';
+import { ToastAndroid } from 'react-native';
 const image = require('../assets/banner.jpg');
 
-export default function OTP() {
-
-    const [isEye, setEye] = useState(true)
+export default function OTP({ navigation, route }) {
+    const [otp, setOtp] = useState("")
+    const [otpInput, setOtpInput] = useState("")
     const [isLoading, setLoading] = useState(false)
-    const [phone, setPhone] = useState("")
-    const [password, setPassword] = useState("")
-    const isFocused = useIsFocused();
     const dispatch = useDispatch()
 
-    const handleLogin = () => {
-        if (phone == "") return
-        if (password == "") return
+    const handleSignup = () => {
+        if (otp == setOtpInput) return
         setLoading(true)
-        dispatch(login({ phone, password })).unwrap()
+        console.log('req')
+        dispatch(register(route.params)).unwrap()
             .then((data) => {
                 setLoading(false)
                 navigation.navigate("Home")
             })
             .catch((err) => {
                 setLoading(false)
-                console.log(err)
             });
     }
+
     useEffect(() => {
-        isFocused ? setPassword("") : setPassword("")
-    }, [isFocused])
+        console.log(route.params)
+        authService.getOtp(route.params.phone).then(data => { console.log('otp: ' + data); setOtp(data) })
+            .catch(err => {
+                ToastAndroid.show('Unable to send OTP', ToastAndroid.SHORT)
+            })
+    }, [])
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
             <Header
@@ -45,8 +47,7 @@ export default function OTP() {
                 <View>
                     <Text style={{ fontSize: 15, fontWeight: "bold", padding: 5 }}>OTP nhận được</Text>
                     <Input inputContainerStyle={styles.chuyenTien} keyboardType="number-pad"
-                        errorMessage={phone ? '' : "Bắt buộc"}
-                        onChangeText={(value) => setPhone(value)}
+                        onChangeText={(value) => setOtpInput(parseInt(value))}
                     ></Input>
                 </View>
 
@@ -58,8 +59,8 @@ export default function OTP() {
                     backgroundColor: "#66cc9a",
                     borderRadius: 50,
                     width: 200,
-                }} onPress={handleLogin}
-                    disabled={phone && password ? false : true}
+                }} onPress={handleSignup}
+                    disabled={otpInput != "" ? false : true}
                 ></Button>
             }
 

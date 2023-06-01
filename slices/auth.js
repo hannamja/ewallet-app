@@ -4,20 +4,12 @@ import AuthService from "../services/auth.service";
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ username, email, password }, thunkAPI) => {
+  async ({ username, phone, password, address, dob }, thunkAPI) => {
     try {
-      const response = await AuthService.register(username, email, password);
-      thunkAPI.dispatch(setMessage(response.data.message));
-      return response.data;
+      const data = await AuthService.register(username, phone, password, address, dob);
+      return { user: data };
     } catch (error) {
-      //   const message =
-      //     (error.response &&
-      //       error.response.data &&
-      //       error.response.data.message) ||
-      //     error.message ||
-      //     error.toString();
-      //   thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
+      console.log(error)
     }
   }
 );
@@ -52,20 +44,19 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [register.fulfilled]: (state, action) => {
-
+      state.user = action.payload.user;
     },
     [register.rejected]: (state, action) => {
 
     },
     [login.fulfilled]: (state, action) => {
-
       state.user = action.payload.user;
     },
     [login.rejected]: (state, action) => {
 
     },
     [logout.fulfilled]: (state, action) => {
-      state = action.payload.user;
+      state.user = action.payload.user;
     },
   },
 });

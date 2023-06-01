@@ -15,6 +15,19 @@ const login = (phone_number, password) => {
       console.log(err)
     });
 };
+//ok
+const getOtp = (phone_number) => {
+  return axios
+    .post(API_URL + "getOtp", {
+      phone_number: phone_number
+    })
+    .then((response) => {
+      return response.data.data.fakeOTPCode;
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+};
 const register = (username, phone_number, password, address, dob) => {
   return axios
     .post(API_URL + "signup", {
@@ -26,7 +39,7 @@ const register = (username, phone_number, password, address, dob) => {
       dob: dob
     })
     .then((response) => {
-      return response.data.data;
+      return response.data;
     })
     .catch((err) => {
       console.log(err)
@@ -40,6 +53,7 @@ const authService = {
   register,
   login,
   logout,
+  getOtp
 };
 
 export default authService;
