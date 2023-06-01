@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://10.0.2.2:4000/";
+const API_URL = "http://192.168.0.4:4000/";
 
 
 const deposit = (linked_id, money, phone_number_des, note, token) => {

@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button } from "@rneui/base";
+import { Button, Header } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { login } from '../slices/auth'
 import { useDispatch } from 'react-redux';
@@ -36,6 +36,9 @@ export default function Login({ navigation }) {
     }, [isFocused])
     return (
         <SafeAreaView style={{ alignItems: "center", backgroundColor: "white", height: "100%" }}>
+            <Header
+                backgroundColor="#66cc9a"
+            />
             <View style={styles.bannerContainer}>
                 <Text style={{ position: "absolute", zIndex: 999, width: "90%", top: 50, left: "5%", fontSize: 30, fontWeight: "bold" }}>ĐĂNG NHẬP</Text>
                 <Image source={image} style={styles.banner}></Image>
@@ -68,9 +71,22 @@ export default function Login({ navigation }) {
             {
                 isLoading ? <View style={[styles.container, styles.horizontal]}>
                     <ActivityIndicator size="small" color="#0000ff" />
-                </View> : <Button title="Đăng nhập" buttonStyle={{ borderRadius: 5, backgroundColor: "#66cc9a" }} onPress={handleLogin}
-                    disabled={phone && password ? false : true}
-                ></Button>
+                </View> : <>
+                    <Button title="Đăng nhập" buttonStyle={{
+                        backgroundColor: "#66cc9a",
+                        borderRadius: 50,
+                        width: 200,
+                    }} onPress={handleLogin}
+                        disabled={phone && password ? false : true}
+                    ></Button>
+                    <Button title="Đăng kí" buttonStyle={{
+                        backgroundColor: "black",
+                        borderRadius: 50,
+                        width: 200,
+                        marginTop: 20
+                    }} onPress={() => navigation.navigate('Signup')}
+                    ></Button>
+                </>
             }
 
         </SafeAreaView>

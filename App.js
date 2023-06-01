@@ -35,6 +35,8 @@ import AddLinkedBank from './screens/AddLinkedBank';
 import LinkedBankDetail from './screens/LinkedBankDetail';
 import AllBank from './screens/AllBank';
 import HistoryDetail from './screens/HistoryDetail';
+import Signup from './screens/Signup';
+import OTP from './screens/OTP';
 const Stack = createStackNavigator();
 const App = () => (
   <Provider store={store}>
@@ -69,6 +71,8 @@ const App = () => (
         <Stack.Screen name="AllBank" component={AllBank} />
         <Stack.Screen name="LinkedBankDetail" component={LinkedBankDetail} />
         <Stack.Screen name="HistoryDetail" component={HistoryDetail} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="OTP" component={OTP} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>

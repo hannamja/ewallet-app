@@ -1,14 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://10.0.2.2:4000/";
-
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
-    email,
-    password,
-  });
-};
+const API_URL = "http://192.168.0.4:4000/";
 
 const login = (phone_number, password) => {
   return axios
@@ -17,14 +9,29 @@ const login = (phone_number, password) => {
       password: password,
     })
     .then((response) => {
-      console.log(response.data.data)
       return response.data.data;
     })
     .catch((err) => {
       console.log(err)
     });
 };
-
+const register = (username, phone_number, password, address, dob) => {
+  return axios
+    .post(API_URL + "signup", {
+      name: username,
+      phone_number: phone_number,
+      password: password,
+      password_confirmation: password,
+      address: address,
+      dob: dob
+    })
+    .then((response) => {
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+}
 const logout = () => {
   return null
 };
