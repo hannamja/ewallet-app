@@ -7,6 +7,16 @@ npm install
 ```
 You also need Android Studio for using emulator. [Download](https://developer.android.com/studio)
 ## Usage
+Go to [this repo] and download
+Run the repo above with the steps below:
+- In file 'hosts', path (%SystemRoot%\System32\drivers\etc\hosts), insert this line: 103.97.126.26 project.ewallet.vn
+- In folder ewallet-proxy-server, run:
+```bash
+node index.js in terminal
+```
+
+Now come back to this repo:
+- In folder ewallet-app, change ip the files in folder service to ip of your machine, then run:
 Run the command bellow in terminal:
 ```bash
 npm run android
