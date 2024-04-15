@@ -7,7 +7,7 @@ npm install
 ```
 You also need Android Studio for using emulator. [Download](https://developer.android.com/studio)
 ## Usage
-Go to [this repo] and download
+Go to [this repo](https://github.com/hannamja/ewallet-proxy-server) and download
 Run the repo above with the steps below:
 - In file 'hosts', path (%SystemRoot%\System32\drivers\etc\hosts), insert this line: 103.97.126.26 project.ewallet.vn
 - In folder ewallet-proxy-server, run:
